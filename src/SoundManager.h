@@ -1,13 +1,14 @@
 #ifndef SOUNDMANAGER_H
 #define SOUNDMANAGER_H
 
+#include "WatchManager.h"
+#include "delegate/MultiCastDelegate.h"
+
 #include "AudioFileSourcePROGMEM.h"
 #include "AudioFileSourceID3.h"
 #include "AudioGeneratorWAV.h"
 #include "AudioOutputI2S.h"
-#include "WatchManager.h"
 
-#include "MultiCastDelegate.h"
 using namespace SA;
 
 /*

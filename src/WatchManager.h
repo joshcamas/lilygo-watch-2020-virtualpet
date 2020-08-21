@@ -1,6 +1,7 @@
 #ifndef WATCHMANAGER_H
 #define WATCHMANAGER_H
 
+
 class WatchManager 
 {
   private:
@@ -23,7 +24,7 @@ class WatchManager
       this->watch->lvgl_begin();
       this->watch->openBL();
 
-      setBacklightBrightness(150);
+      setBacklightBrightness(100);
       
     }
     void setBacklightBrightness(int value = 150)
