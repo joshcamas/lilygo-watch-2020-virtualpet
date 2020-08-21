@@ -1,0 +1,7 @@
+TODO
+
+WatchManager: Basic Manager class that holds the glue together
+AnimatedImage: Wrapper to have animated image (requires timer library)
+SoundManager: Wrapper for sound playback and loading
+FileManager: Wrapper to manage all assets (images, sounds)
+
