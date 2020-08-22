@@ -1,4 +1,3 @@
-
 #include "lvgl/lvgl.h"
 
 #ifndef LV_ATTRIBUTE_MEM_ALIGN
