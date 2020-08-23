@@ -4,6 +4,7 @@
 
 #include "WatchManager.h"
 #include "SoundManager.h"
+#include "ui/AnimatedAtlas.h"
 #include "App.h"
 
 //Assets
@@ -14,12 +15,15 @@ class PetApp : public App {
     private:
 
     SoundManager* soundManager = nullptr;
-
-    lv_obj_t* img1 = nullptr;
+    AnimatedAtlas* foxAtlas;
     PlayingSound* sound = nullptr;
 
-    bool isPlaying = false;
+    animationData idleAnimation;
+    animationData clickAnimation;
 
+    bool isPlaying = false;
+    bool touchDown = false;
+    
     public:
     PetApp(WatchManager* manager,SoundManager* soundManager);
 

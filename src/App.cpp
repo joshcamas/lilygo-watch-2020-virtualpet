@@ -16,7 +16,7 @@ void App::startSleep() {
         this->manager->vibrate(60);
         
         //Delay to allow vibration to happen
-        delay(60);
+        delay(100);
 
         this->manager->watch->displaySleep();
         this->manager->watch->closeBL();
@@ -26,7 +26,7 @@ void App::startSleep() {
 void App::stopSleep() {
         this->manager->watch->displayWakeup();
         this->manager->watch->openBL();
-        this->manager->vibrate(60);
+        //this->manager->vibrate(60);
         //this->chirp();
     }
 

@@ -47,5 +47,5 @@ class SoundManager {
 
   PlayingSound* playWAVFromMem(const void *data,uint32_t len, AudioOutputI2S *output = nullptr);
   
-  void loop();
+  void update();
 };
