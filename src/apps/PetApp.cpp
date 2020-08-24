@@ -14,7 +14,6 @@ LV_IMG_DECLARE(img_fox_sheet);
 
 PetApp::PetApp(WatchManager *manager, SoundManager *soundManager) : App(manager)
 {
-    this->manager = manager;
     this->soundManager = soundManager;
 }
 

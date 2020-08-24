@@ -22,5 +22,5 @@ public:
     void useTouch();
     void preUpdate();
     void update();
-    void lateUpdate();
+    void postUpdate();
 };

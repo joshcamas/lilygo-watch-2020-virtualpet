@@ -190,7 +190,9 @@ void WatchManager::powerButtonSwitchApp()
 void WatchManager::update()
 {
     //Start sleeping
-    if (!this->isSleeping && ((millis() - this->sleepTimerStart) > this->sleepTime))
+    if (!this->isSleeping && 
+    (this->currentApp == nullptr || this->currentApp->allowAutoSleep()) && 
+    ((millis() - this->sleepTimerStart) > this->sleepTime))
     {
         this->enterSleep();
         return;
@@ -204,26 +206,26 @@ void WatchManager::update()
     }
 
     //Start Dim
-    if (!this->isDimmed && ((millis() - this->dimTimerStart) > this->dimTime))
+    if (!this->isDimmed && 
+    (this->currentApp == nullptr || this->currentApp->allowAutoSleep()) &&
+    ((millis() - this->dimTimerStart) > this->dimTime))
         this->startDim();
 
-    //Loop for LVGL
-    lv_task_handler();
-
     //Detect app switch
-
+    /*
     if (this->checkAppSwitch()) 
-    {
-        
+    { 
         resetSleepAndDimTimer();
         this->powerButtonSwitchApp();
         return;
-    }
+    }*/
 
     if (this->currentApp != nullptr)
         this->currentApp->loop();
 
-    /*
+    //Loop for LVGL
+    lv_task_handler();
+
     //Detect power press
     this->watch->power->readIRQ();
 
@@ -231,9 +233,9 @@ void WatchManager::update()
     {
         this->resetSleepAndDimTimer();
         this->powerButtonSwitchApp();
-        Serial.printf("Button Press\n");
     }
-    this->watch->power->clearIRQ();*/
+
+    this->watch->power->clearIRQ();
 
 }
 

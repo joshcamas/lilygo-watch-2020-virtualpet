@@ -37,6 +37,16 @@ void InputManager::useTouch()
     this->isTouchUsed = true;
 }
 
+void InputManager::postUpdate() 
+{
+
+}
+
+void InputManager::update() 
+{
+
+}
+
 void InputManager::preUpdate()
 {
     this->isTouchUsed = false;

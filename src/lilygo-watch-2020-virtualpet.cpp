@@ -54,7 +54,7 @@ void loop()
     inputManager->update();
 
     //Late Update
-    inputManager->lateUpdate();
+    inputManager->postUpdate();
 }
 
 #endif

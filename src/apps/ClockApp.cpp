@@ -13,8 +13,6 @@ ClockApp::ClockApp(WatchManager* manager,SoundManager* soundManager) : App(manag
 void ClockApp::start() {
     Serial.printf("Starting Clock App\n");
 
-    this->manager->enableVibration();
-
     //Clear
     lv_obj_clean(lv_scr_act());
     

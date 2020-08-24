@@ -18,8 +18,10 @@ class App {
 
     virtual void loop();
 
-    void startSleep();
+    virtual void startSleep();
 
-    void stopSleep();
+    virtual void stopSleep();
+
+    virtual bool allowAutoSleep();
 
 };
