@@ -14,6 +14,7 @@
 
 #include "apps/PetApp.h"
 #include "apps/ClockApp.h"
+#include "apps/sandapp/sandapp.h"
 
 WatchManager *manager = nullptr;
 SoundManager *soundManager = nullptr;
@@ -21,6 +22,7 @@ InputManager *inputManager = nullptr;
 
 PetApp *petApp = nullptr;
 ClockApp *clockApp = nullptr;
+SandApp *sandApp = nullptr;
 
 void setup()
 {
@@ -34,13 +36,15 @@ void setup()
     soundManager = new SoundManager(manager);
     inputManager = new InputManager(manager);
 
+    sandApp = new SandApp(manager);
     petApp = new PetApp(manager, soundManager);
     clockApp = new ClockApp(manager, soundManager);
 
+    manager->addAppToList(sandApp);
     manager->addAppToList(petApp);
     manager->addAppToList(clockApp);
 
-    manager->startApp(petApp);
+    manager->startApp(sandApp);
 }
 
 void loop()
