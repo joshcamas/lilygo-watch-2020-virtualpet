@@ -123,6 +123,7 @@ WorldUpdater::WorldUpdater(World* world)
 {
     this->world = world;
     this->updateDelay = 50;
+    this->frame = 0;
 }
 
 void WorldUpdater::start()
@@ -141,19 +142,9 @@ void WorldUpdater::update()
     for(int x = 0; x < this->world->width; x++)
     {
         for(int y = 0; y < this->world->height; y++) 
-        {
-            //TODO: Make this better
-            if(this->checkerboardValue) 
-            {
-                if(!((x % 2 == 0 && y % 2 == 0) || (x % 2 == 1 && y % 2 == 1)))
-                    continue;
-            }
-
-            else 
-            {
-                if(!((x % 2 == 0 && y % 2 == 1) || (x % 2 == 1 && y % 2 == 0)))
-                    continue;
-            }
+        {   
+            if(this->enableCheckerboard && this->checkerboardValue != ((x % 2 == 0 && y % 2 == 0) || (x % 2 == 1 && y % 2 == 1))) 
+                continue;
 
             int c = this->world->getTileIndexAtPosition(x,y);
 
@@ -163,10 +154,11 @@ void WorldUpdater::update()
             TileType* tt = this->world->getTileTypeFromIndex(c);
 
             if(tt != nullptr)
-                tt->updatePixel(x, y);
+                tt->updatePixel(x, y,this->frame);
         }
     }
 
+    this->frame += 1;
     this->checkerboardValue = !this->checkerboardValue;
     //this->lastUpdate = millis();
 }

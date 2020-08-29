@@ -3,32 +3,31 @@
 #include "apps/sandapp/tiletype.h"
 #include "apps/sandapp/tiletype_static.h"
 #include "apps/sandapp/tiletype_sand.h"
+#include "apps/sandapp/tiletype_water.h"
 
 SandApp::SandApp(WatchManager *manager) : App(manager) {}
 
 void SandApp::start()
 {
     //Clear
-    lv_obj_clean(lv_scr_act());
-    
+    //lv_obj_clean(lv_scr_act());
+
     this->world = new World();
     this->worldUpdater = new WorldUpdater(this->world);
 
-    TileType* airTile = new TileTypeStatic(0x000);
-    TileType* blockTile = new TileTypeStatic(0xfff);
-    TileType* sandTile = new TileTypeSand();
+    TileType *airTile = new TileTypeStatic(0x000);
+    TileType *blockTile = new TileTypeStatic(0xfff);
+    TileType *sandTile = new TileTypeSand();
+    TileType *waterTile = new TileTypeWater();
 
-    this->world->addTileType(airTile);
-    this->world->addTileType(blockTile);
-    this->world->addTileType(sandTile);
+    this->world->addTileType(airTile);   //0
+    this->world->addTileType(blockTile); //1
+    this->world->addTileType(waterTile); //2
+    this->world->addTileType(sandTile);  //3
 
-    //Draw Box
-    //this->world->drawVerticalLine(0,1);
-    //this->world->drawVerticalLine(29,1);
-    //this->world->drawHorizontalLine(0,1);
-    //this->world->drawHorizontalLine(39,1);
-    
-    this->worldDrawer = new WorldDrawer(this->world);
+    this->selectedTile = 2;
+
+    this->worldDrawer = new WorldDrawer(this->world, this->manager);
     this->worldDrawer->start();
 
     //Set up accel
@@ -41,11 +40,11 @@ void SandApp::start()
     this->manager->watch->bma->accelConfig(cfg);
     this->manager->watch->bma->enableAccel();
 
-
     setCpuFrequencyMhz(240);
-    
-    Serial.printf("Completed Sand App Initialization\n");
 
+    this->manager->watch->tft->fillScreen(TFT_BLACK);
+
+    Serial.printf("Completed Sand App Initialization\n");
 }
 
 void SandApp::stop()
@@ -58,29 +57,30 @@ void SandApp::stop()
 void SandApp::loop()
 {
     int16_t x, y;
-    if(this->manager->watch->getTouch(x,y)) 
+    if (this->manager->watch->getTouch(x, y))
     {
-        //Convert x to canvas 
-        x = x/8;
-        y = y/8;
-        this->world->setTileIndexAtPosition(x,y,2);
+        x = x / 4;
+        y = y / 4;
+        this->world->setTileIndexAtPosition(x, y, this->selectedTile);
+        this->world->setTileIndexAtPosition(x + 1, y + 1, this->selectedTile);
+        this->world->setTileIndexAtPosition(x + 1, y, this->selectedTile);
+        this->world->setTileIndexAtPosition(x, y + 1, this->selectedTile);
     }
 
     //Update gravity
     uint8_t rotation = this->manager->watch->bma->direction();
+    
+    if (rotation == DIRECTION_TOP_EDGE)
+        this->world->gravityDirection = DIR_UP;
 
-    if(rotation == DIRECTION_TOP_EDGE)
-        this->world->gravityDirection = 0;
+    else if (rotation == DIRECTION_RIGHT_EDGE)
+        this->world->gravityDirection = DIR_RIGHT;
 
-    else if(rotation == DIRECTION_RIGHT_EDGE)
-        this->world->gravityDirection = 1;
-        
-    else if(rotation == DIRECTION_BOTTOM_EDGE)
-        this->world->gravityDirection = 2;
+    else if (rotation == DIRECTION_BOTTOM_EDGE)
+        this->world->gravityDirection = DIR_DOWN;
 
-    else if(rotation == DIRECTION_LEFT_EDGE)
-        this->world->gravityDirection = 3;
-
+    else if (rotation == DIRECTION_LEFT_EDGE)
+        this->world->gravityDirection = DIR_LEFT;
 
     //Actually update world
     this->worldUpdater->update();

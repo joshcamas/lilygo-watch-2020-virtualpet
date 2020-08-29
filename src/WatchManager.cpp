@@ -10,8 +10,6 @@ void WatchManager::startup()
     this->watch = TTGOClass::getWatch();
     this->watch->begin();
 
-    //Startup LVGL
-    this->watch->lvgl_begin();
     this->watch->openBL();
 
     //Start vibration
@@ -105,12 +103,16 @@ bool WatchManager::startAppIndex(int index)
     if (this->appList[index] == nullptr)
         return false;
 
+    //Close current app
     if (this->currentApp != nullptr)
         this->currentApp->stop();
 
+    //Reset features
+    this->disableLvgl();
+    
+    //Start new app
     this->currentApp = appList[index];
     this->currentAppIndex = index;
-
     this->currentApp->start();
 
     return true;
@@ -136,6 +138,35 @@ void WatchManager::disableVibration()
 {
     this->vibrationEnabled = false;
 }
+
+void WatchManager::enableLvgl()
+{
+    if(this->lvglEnabled)
+        return;
+
+    this->lvglEnabled = true;
+    this->watch->lvgl_begin();
+    
+}
+void WatchManager::disableLvgl() 
+{
+    if(!this->lvglEnabled)
+        return;
+        
+    this->lvglEnabled = false;
+    this->watch->stopLvglTick();
+}
+
+void WatchManager::enableTFT()
+{
+    //Do nothing I guess?
+}
+
+void WatchManager::disableTFT()
+{
+
+}
+
 
 void WatchManager::vibrate(int vibrateTime)
 {
@@ -224,7 +255,8 @@ void WatchManager::update()
         this->currentApp->loop();
 
     //Loop for LVGL
-    lv_task_handler();
+    if(this->lvglEnabled)
+        lv_task_handler();
 
     //Detect power press
     this->watch->power->readIRQ();

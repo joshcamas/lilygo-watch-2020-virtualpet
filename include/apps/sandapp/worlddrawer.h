@@ -2,6 +2,7 @@
 
 #include <lvgl.h>
 #include "apps/sandapp/worldupdater.h"
+#include "WatchManager.h"
 
 #define SCREEN_WIDTH 240
 #define SCREEN_HEIGHT 240
@@ -9,13 +10,12 @@
 class WorldDrawer 
 {
 private:
-    lv_obj_t *canvas;
     World* world;
     int pixelWidth;
     int pixelHeight;
-    lv_color_t cbuffer [LV_CANVAS_BUF_SIZE_INDEXED_4BIT(SCREEN_WIDTH,SCREEN_HEIGHT)];
+    WatchManager* manager;
 public:
-    WorldDrawer(World* world);
+    WorldDrawer(World* world, WatchManager* manager);
 
     void start();
     void stop();

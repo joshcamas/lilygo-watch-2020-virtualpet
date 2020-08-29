@@ -24,6 +24,8 @@ void PetApp::start()
     //Setup features
     this->soundManager->enableAudio();
 
+    this->manager->enableLvgl();
+    
     //Clear
     lv_obj_clean(lv_scr_act());
 

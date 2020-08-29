@@ -10,73 +10,34 @@ class TileTypeSand : public TileType
 public:
 
     //Updates a world's pixel at a specific point
-    void updatePixel(int x,int y) override
+    void updatePixel(int x,int y, int frame) override
     { 
-        int down = 0;
-
-        //Going towards top
-        if(this->world->gravityDirection == 0)
-            down = -1;
-
-        //Going towards bottom
-        else if(this->world->gravityDirection == 2)
-            down = 1;
-
-        //Terrible code incomming
-        if(down == 1 || down == -1) 
+        //down
+        if(this->getPixelNeighbor(x,y,DIR_DOWN,true) == 0) 
         {
-            if(this->world->getTileIndexAtPosition(x,y+down) == 0) 
-            {
-                this->world->setTileIndexAtPosition(x,y,0);
-                this->world->setTileIndexAtPosition(x,y+down,this->selfIndex);
-                return;
-            }
-            if(this->world->getTileIndexAtPosition(x+1,y+down) == 0) 
-            {
-                this->world->setTileIndexAtPosition(x,y,0);
-                this->world->setTileIndexAtPosition(x+1,y+down,this->selfIndex);
-                return;
-            }
-            
-            if(this->world->getTileIndexAtPosition(x-1,y+down) == 0) 
-            {
-                this->world->setTileIndexAtPosition(x,y,0);
-                this->world->setTileIndexAtPosition(x-1,y+down,this->selfIndex);
-                return;
-            }
+            this->world->setTileIndexAtPosition(x,y,0);
+            this->setPixelNeighbor(x,y,DIR_DOWN,this->selfIndex,true);
             return;
         }
 
-        //Going towards right
-        if(this->world->gravityDirection == 3)
-            down = 1;
-
-        //Going towards left
-        else if(this->world->gravityDirection == 1)
-            down = -1;
-
-        if(this->world->getTileIndexAtPosition(x+down,y) == 0) 
+        //down left
+        if(frame % 2 == 0 && this->getPixelNeighbor(x,y,DIR_DOWNLEFT,true) == 0) 
         {
             this->world->setTileIndexAtPosition(x,y,0);
-            this->world->setTileIndexAtPosition(x+down,y,this->selfIndex);
+            this->setPixelNeighbor(x,y,DIR_DOWNLEFT,this->selfIndex,true);
             return;
         }
-        if(this->world->getTileIndexAtPosition(x+down,y+1) == 0) 
+
+        //down right
+        if(frame % 2 == 1 && this->getPixelNeighbor(x,y,DIR_DOWNRIGHT,true) == 0) 
         {
             this->world->setTileIndexAtPosition(x,y,0);
-            this->world->setTileIndexAtPosition(x+down,y+1,this->selfIndex);
-            return;
-        }
-        
-        if(this->world->getTileIndexAtPosition(x+down,y-1) == 0) 
-        {
-            this->world->setTileIndexAtPosition(x,y,0);
-            this->world->setTileIndexAtPosition(x+down,y-1,this->selfIndex);
+            this->setPixelNeighbor(x,y,DIR_DOWNRIGHT,this->selfIndex,true);
             return;
         }
 
     }
 
     //Returns a hex3 color of this tile type 
-    uint32_t getPixelColorHex3() override { return 0xff0; }
+    uint32_t getPixelColorHex3() override { return 0xf0f032; }
 };

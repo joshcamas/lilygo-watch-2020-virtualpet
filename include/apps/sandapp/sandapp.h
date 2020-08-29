@@ -10,6 +10,7 @@ private:
     World* world;
     WorldUpdater* worldUpdater;
     WorldDrawer* worldDrawer;
+    int selectedTile = 1;
     
 public:
     SandApp(WatchManager *manager);

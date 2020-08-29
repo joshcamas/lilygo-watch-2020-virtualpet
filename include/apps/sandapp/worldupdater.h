@@ -4,17 +4,28 @@
 
 class TileType;
 
+#define DIR_NONE 0
+#define DIR_UP 1
+#define DIR_RIGHT 2
+#define DIR_DOWN 3
+#define DIR_LEFT 4
+#define DIR_UPRIGHT 5
+#define DIR_UPLEFT 6
+#define DIR_DOWNRIGHT 7
+#define DIR_DOWNLEFT 8
+
 class World
 {
 private:
     //All tiletypes defined
     TileType* tileTypes[10];
     int tileTypeCount = 0;
+
 public:
 
     //Note hardcoded values for screen size
-    const static int width = 30;
-    const static int height = 30;
+    const static int width = 60;
+    const static int height = 60;
 
     bool isDirty = true;
     int tiles[width*height];
@@ -22,7 +33,7 @@ public:
 
     World();
 
-    int gravityDirection = 2;
+    int gravityDirection = DIR_DOWN;
     
     void addTileType(TileType *tileType);
     int getTypeIndexFromTile(TileType *tile);
@@ -46,6 +57,8 @@ private:
     int updateDelay = 100;
     int lastUpdate;
     bool checkerboardValue = false;
+    bool enableCheckerboard = true;
+    int frame;
 
 public:
     WorldUpdater(World* world);
